@@ -20,7 +20,7 @@ class CM:
     '''
     def __init__(self, degree_sequence: List[int]):
 
-        self._checkIfValidDegreeSequence(degr_sequence)
+        self._checkIfValidDegreeSequence(degree_sequence)
 
         # shuffle the degree distribution to get random order
         np.random.shuffle(degree_sequence)
@@ -75,8 +75,8 @@ class CM:
 
 
     def _checkIfValidDegreeSequence(self, degree_sequence):
-        assert not(0 in degr_sequence), "degree sequence contains 0"
-        assert (sum(degr_sequence) % 2 == 0), "degree sequence is not even"
+        assert not(0 in degree_sequence), "degree sequence contains 0"
+        assert (sum(degree_sequence) % 2 == 0), "degree sequence is not even"
 
                     
     def DegreeDistribrution(self, tail=True):
@@ -92,14 +92,18 @@ class CM:
         nx.draw(self.G)
         plt.show()
 
-
+    def AreThereParallelsEdges(self):
+        for n in self.G.nodes:
+            if len(self.G.adj[n]) < 3:
+                return True
+        
+        return False
 
 if __name__ == "__main__":
     # generate random CM with degr_sequence
-    degr_sequence = np.random.choice([i for i in range(1, 10)], size=50)
+    #degr_sequence = np.random.choice([i for i in range(1, 10)], size=50)
+    degr_sequence = [3 for _ in range(50)]
     print("degree sequence with sum of", sum(degr_sequence))
     cm = CM(degr_sequence)
+    print("Are There Parallels Edges: ", cm.AreThereParallelsEdges())
     cm.draw()
-            
-
-
