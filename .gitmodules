@@ -1,0 +1,3 @@
+[submodule "DegreeDistributions"]
+	path = DegreeDistributions
+	url = https://github.com/LourensT/DegreeDistributions
