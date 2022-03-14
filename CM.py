@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 
 from DegreeDistributions.DegreeDistributions import *
 
+import random
+
 class CM:
 
 
@@ -98,6 +100,56 @@ class CM:
                 return True
         
         return False
+
+        '''
+    Returns distribution of typical distance:
+    - the length of the shortest path between two randomly drawn nodes, given that they are connected
+
+    @param sample: The number of randomly drawn 
+
+    '''
+    def typicalDistanceDistribution(self, sample=-1):
+
+        all_shortest_paths = []
+        if sample == -1:
+            #dictionary of dictionaries dict[source][target] = path
+            for source, destinations in nx.algorithms.shortest_path(self.G).items():
+                for destination, path in destinations.items():
+                    all_shortest_paths.append(path)
+        else:
+            for i in range(sample):
+                found_path = False
+                while not found_path:
+                    source = random.choice(list(self.G.nodes))
+                    target = random.choice(list(self.G.nodes))
+
+                    try:
+                        all_shortest_paths.append(nx.algorithms.shortest_path(self.G, source, target))
+                        found_path = True
+                    except nx.exception.NetworkXNoPath:
+                        found_path = False
+
+                    
+
+        # calculate pmf
+        pmf = {}
+        numberOfPaths = 0 #if sample > 0, then this will end up being equal to sample
+        for path in all_shortest_paths:
+            if (len(path)-1) in pmf:
+                pmf[len(path)-1] += 1
+            else: 
+                pmf[len(path)-1] = 1
+            numberOfPaths += 1
+
+        print(numberOfPaths)
+
+        #normalize the histogram (paths currently double counted)
+        for key in pmf.keys():
+            pmf[key] = pmf[key] / numberOfPaths
+
+        assert abs(sum([v for v in pmf.values()]) - 1) < 0.001, "pmf does not sum to one!!"
+
+        return pmf
 
 if __name__ == "__main__":
     # generate random CM with degr_sequence

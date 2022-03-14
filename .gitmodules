@@ -1,3 +1,6 @@
 [submodule "DegreeDistributions"]
 	path = DegreeDistributions
 	url = https://github.com/LourensT/DegreeDistributions
+[submodule "TikzPlotsFromPython"]
+	path = TikzPlotsFromPython
+	url = https://github.com/LourensT/TikzPlotsFromPython
